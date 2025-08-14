@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专家抽取系统</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">专家抽取系统</h1>
+                <nav class="main-nav">
+                    <button class="nav-btn active" data-view="requirements">需求管理</button>
+                    <button class="nav-btn" data-view="experts">专家管理</button>
+                    <button class="nav-btn" data-view="settings">系统设置</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 需求管理视图 -->
+            <div id="requirements-view" class="view-content active">
+                <div class="view-header">
+                    <h2>专家抽取需求</h2>
+                    <button id="new-requirement-btn" class="btn btn-primary">新建需求</button>
+                </div>
+                
+                <div class="requirements-list" id="requirements-list">
+                    <!-- 需求列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 专家管理视图 -->
+            <div id="experts-view" class="view-content">
+                <div class="view-header">
+                    <h2>专家管理</h2>
+                    <button id="add-expert-btn" class="btn btn-primary">添加专家</button>
+                </div>
+                
+                <div class="experts-list" id="experts-list">
+                    <!-- 专家列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 系统设置视图 -->
+            <div id="settings-view" class="view-content">
+                <div class="view-header">
+                    <h2>系统设置</h2>
+                </div>
+                
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <h3>数据库设置</h3>
+                        <p>数据库路径: <span id="db-path">./data/experts.db</span></p>
+                        <button id="export-data-btn" class="btn btn-secondary">导出数据</button>
+                        <button id="import-data-btn" class="btn btn-secondary">导入数据</button>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>应用信息</h3>
+                        <p>版本: 1.0.0</p>
+                        <p>构建时间: <span id="build-time"></span></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">标题</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- 模态框内容 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 新建需求模态框 -->
+    <div id="requirement-modal" class="modal-overlay hidden">
+        <div class="modal large-modal">
+            <div class="modal-header">
+                <h3>新建专家抽取需求</h3>
+                <button class="modal-close" id="requirement-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="requirement-form">
+                    <div class="form-group">
+                        <label for="requirement-title">需求标题</label>
+                        <input type="text" autocomplete="off" id="requirement-title" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="requirement-description">需求描述</label>
+                        <textarea id="requirement-description" autocomplete="off" name="description" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>专业配置</label>
+                        <div id="specialty-configs">
+                            <div class="specialty-config">
+                                <select class="specialty-name" required>
+                                    <option value="">请选择专业</option>
+                                </select>
+                                <input type="number" autocomplete="off" placeholder="专家数量" class="specialty-count" min="1" required>
+                                <button type="button" class="btn btn-danger remove-specialty">删除</button>
+                            </div>
+                        </div>
+                        <button type="button" id="add-specialty-btn" class="btn btn-secondary">添加专业</button>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">创建需求</button>
+                        <button type="button" class="btn btn-secondary" id="cancel-requirement">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 需求详情模态框 -->
+    <div id="detail-modal" class="modal-overlay hidden">
+        <div class="modal large-modal">
+            <div class="modal-header">
+                <h3 id="detail-modal-title">需求详情</h3>
+                <button class="modal-close" id="detail-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="requirement-detail-content">
+                    <!-- 需求详情内容 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本文件 -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/requirements.js"></script>
+    <script src="scripts/experts.js"></script>
+
+    <!-- 自定义弹窗 -->
+    <div id="custom-alert" class="custom-modal-overlay hidden">
+        <div class="custom-modal">
+            <div class="custom-modal-header">
+                <h3 id="custom-alert-title">提示</h3>
+            </div>
+            <div class="custom-modal-body">
+                <p id="custom-alert-message"></p>
+            </div>
+            <div class="custom-modal-footer">
+                <button id="custom-alert-ok" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-confirm" class="custom-modal-overlay hidden">
+        <div class="custom-modal">
+            <div class="custom-modal-header">
+                <h3 id="custom-confirm-title">确认</h3>
+            </div>
+            <div class="custom-modal-body">
+                <p id="custom-confirm-message"></p>
+            </div>
+            <div class="custom-modal-footer">
+                <button id="custom-confirm-yes" class="btn btn-primary">确定</button>
+                <button id="custom-confirm-no" class="btn btn-secondary">取消</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
