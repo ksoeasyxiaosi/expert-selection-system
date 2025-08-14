@@ -1,0 +1,63 @@
+name: Release ARM Linux App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential python3 make
+        
+    - name: Install npm dependencies
+      run: npm install
+      
+    - name: Rebuild sqlite3 for all architectures
+      run: |
+        # ARM64
+        export npm_config_arch=arm64
+        export npm_config_target=28.0.0
+        export npm_config_disturl=https://electronjs.org/headers
+        export npm_config_runtime=electron
+        export npm_config_build_from_source=true
+        npm rebuild sqlite3
+        
+        # ARMv7l
+        export npm_config_arch=armv7l
+        npm rebuild sqlite3
+        
+        # x64
+        export npm_config_arch=x64
+        npm rebuild sqlite3
+        
+    - name: Build all Linux architectures
+      run: |
+        npm run build:linux-arm64
+        npm run build:linux-arm
+        npm run build:linux-x64
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          dist/*.AppImage
+          dist/*.deb
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
