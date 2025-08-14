@@ -56,7 +56,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES: true
       run: |
-        npm run build:linux-simple
+        npm run build:linux-optimized
         
     - name: List build artifacts
       run: |

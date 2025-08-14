@@ -1,0 +1,96 @@
+# Electron Builder 优化配置
+appId: com.expert.selection
+productName: 专家抽取系统
+directories:
+  output: dist
+  buildResources: build
+
+# 文件包含规则 - 只包含必要的文件
+files:
+  - main.js
+  - scripts/**/*
+  - database/**/*
+  - styles/**/*
+  - assets/**/*
+  - index.html
+  - package.json
+  - "!node_modules/**/*"
+  - "!build/**/*"
+  - "!.git/**/*"
+  - "!*.log"
+  - "!*.md"
+  - "!test/**/*"
+  - "!.github/**/*"
+  - "!dist/**/*"
+  - "!node_modules/.cache/**/*"
+  - "!node_modules/.bin/**/*"
+  - "!node_modules/*/test/**/*"
+  - "!node_modules/*/tests/**/*"
+  - "!node_modules/*/docs/**/*"
+  - "!node_modules/*/examples/**/*"
+  - "!node_modules/*/samples/**/*"
+  - "!node_modules/*/demo/**/*"
+  - "!node_modules/*/demos/**/*"
+
+# 启用 asar 打包
+asar: true
+asarUnpack:
+  - node_modules/sqlite3/**/*
+
+# 不包含子模块
+includeSubNodeModules: false
+
+# 压缩选项
+compression: maximum
+
+# 移除包信息
+removePackageScripts: true
+removePackageKeywords: true
+
+# 额外资源 - 只包含必要的数据库文件
+extraResources:
+  - from: database
+    to: database
+    filter:
+      - "**/*.db"
+      - "**/*.sql"
+
+# Linux 配置
+linux:
+  target:
+    - target: AppImage
+      arch: [arm64]
+    - target: deb
+      arch: [arm64]
+  icon: assets/icon.png
+  category: Utility
+  compression: maximum
+  desktop:
+    Name: 专家抽取系统
+    Comment: 专家抽取桌面应用
+    Type: Application
+    Categories: Utility;
+
+# Windows 配置
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: assets/icon.ico
+  requestedExecutionLevel: asInvoker
+  compression: maximum
+
+# NSIS 配置
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: 专家抽取系统
+  installerIcon: assets/icon.ico
+  uninstallerIcon: assets/icon.ico
+  installerHeaderIcon: assets/icon.ico
+  compression: maximum
+
+# 发布配置
+publish: null

@@ -14,6 +14,8 @@
     "build:linux-arm64": "electron-builder --linux --arm64",
     "build:linux-x64": "electron-builder --linux --x64",
     "build:linux-simple": "node build-linux-simple.js",
+    "build:linux-optimized": "node build-optimized.js",
+    "analyze-size": "node analyze-size.js",
     "install:legacy": "npm install --legacy-peer-deps",
     "rebuild": "electron-rebuild",
     "rebuild:sqlite3": "npm rebuild sqlite3"
@@ -43,12 +45,21 @@
       "output": "dist"
     },
     "files": [
-      "**/*",
+      "main.js",
+      "scripts/**/*",
+      "database/**/*",
+      "styles/**/*",
+      "assets/**/*",
+      "index.html",
+      "package.json",
       "!node_modules/**/*",
-      "dist/**/*",
       "!build/**/*",
       "!.git/**/*",
-      "!*.log"
+      "!*.log",
+      "!*.md",
+      "!test/**/*",
+      "!.github/**/*",
+      "!dist/**/*"
     ],
     "win": {
       "target": [
@@ -60,7 +71,8 @@
         }
       ],
       "icon": "assets/icon.ico",
-      "requestedExecutionLevel": "asInvoker"
+      "requestedExecutionLevel": "asInvoker",
+      "compression": "maximum"
     },
     "linux": {
       "target": [
@@ -79,6 +91,7 @@
       ],
       "icon": "assets/icon.png",
       "category": "Utility",
+      "compression": "maximum",
       "desktop": {
         "Name": "专家抽取系统",
         "Comment": "专家抽取桌面应用",
@@ -94,32 +107,29 @@
       "shortcutName": "专家抽取系统",
       "installerIcon": "assets/icon.ico",
       "uninstallerIcon": "assets/icon.ico",
-      "installerHeaderIcon": "assets/icon.ico"
+      "installerHeaderIcon": "assets/icon.ico",
+      "compression": "maximum"
     },
     "extraResources": [
       {
         "from": "database",
-        "to": "database"
-      },
-      {
-        "from": "node_modules/sqlite3/",
-        "to": "node_modules/sqlite3/",
+        "to": "database",
         "filter": [
-          "**/*"
-        ]
-      },
-      {
-        "from": "node_modules/uuid/",
-        "to": "node_modules/uuid/",
-        "filter": [
-          "**/*"
+          "**/*.db",
+          "**/*.sql"
         ]
       }
     ],
-    "asar": false,
-    "includeSubNodeModules": true,
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/sqlite3/**/*"
+    ],
+    "includeSubNodeModules": false,
     "npmRebuild": false,
-    "publish": null
+    "publish": null,
+    "compression": "maximum",
+    "removePackageScripts": true,
+    "removePackageKeywords": true
   },
   "__npminstall_done": false
 }
