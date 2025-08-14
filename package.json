@@ -15,7 +15,9 @@
     "build:linux-x64": "electron-builder --linux --x64",
     "build:linux-simple": "node build-linux-simple.js",
     "build:linux-optimized": "node build-optimized.js",
+    "build:simple": "node build-simple.js",
     "analyze-size": "node analyze-size.js",
+    "check-env": "node check-env.js",
     "install:legacy": "npm install --legacy-peer-deps",
     "rebuild": "electron-rebuild",
     "rebuild:sqlite3": "npm rebuild sqlite3"

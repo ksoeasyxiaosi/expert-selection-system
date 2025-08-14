@@ -10,6 +10,17 @@ process.env.GH_TOKEN = 'dummy-token';
 process.env.GITHUB_TOKEN = 'dummy-token';
 process.env.NODE_ENV = 'production';
 
+// 检查依赖是否安装
+if (!fs.existsSync('node_modules/electron-builder')) {
+    console.log('📦 安装 electron-builder...');
+    try {
+        execSync('npm install', { stdio: 'inherit' });
+    } catch (error) {
+        console.error('❌ 安装依赖失败:', error.message);
+        process.exit(1);
+    }
+}
+
 // 清理之前的构建
 if (fs.existsSync('dist')) {
     console.log('🧹 清理之前的构建文件...');
@@ -41,7 +52,13 @@ filesToRemove.forEach(pattern => {
 try {
     // 构建 ARM64 版本
     console.log('🔨 构建 ARM64 版本...');
-    execSync('npx electron-builder --linux --arm64 --publish never', { 
+    
+    // 使用 npm run 命令或直接调用 electron-builder
+    const buildCommand = fs.existsSync('node_modules/.bin/electron-builder') 
+        ? 'node_modules/.bin/electron-builder --linux --arm64 --publish never'
+        : 'npm run build:linux-arm64';
+    
+    execSync(buildCommand, { 
         stdio: 'inherit',
         env: { ...process.env }
     });
@@ -95,6 +112,10 @@ try {
     
 } catch (error) {
     console.error('❌ 构建失败:', error.message);
+    console.log('\n💡 尝试以下解决方案:');
+    console.log('1. 运行: npm install');
+    console.log('2. 运行: npm run build:linux-arm64');
+    console.log('3. 检查 node_modules 是否正确安装');
     process.exit(1);
 }
 
