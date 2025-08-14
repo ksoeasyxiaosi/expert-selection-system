@@ -1,0 +1,185 @@
+name: Build Linux ARM Version
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      target_arch:
+        description: 'Target Architecture'
+        required: true
+        default: 'arm64'
+        type: choice
+        options:
+        - arm64
+        - armv7l
+        - x64
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        include:
+          - arch: arm64
+            target: arm64
+            electron_arch: arm64
+          - arch: armv7l
+            target: armv7l
+            electron_arch: armv7l
+          - arch: x64
+            target: x64
+            electron_arch: x64
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential python3 make
+        
+    - name: Install npm dependencies
+      run: npm ci
+      
+    - name: Rebuild sqlite3 for Electron
+      run: |
+        export npm_config_arch=${{ matrix.electron_arch }}
+        export npm_config_target=28.0.0
+        export npm_config_disturl=https://electronjs.org/headers
+        export npm_config_runtime=electron
+        export npm_config_build_from_source=true
+        npm rebuild sqlite3
+        
+    - name: Verify sqlite3 module
+      run: |
+        echo "Checking sqlite3 module..."
+        ls -la node_modules/sqlite3/lib/binding/ || echo "No binding directory found"
+        find node_modules/sqlite3 -name "*.node" || echo "No .node files found"
+        
+    - name: Build Linux App
+      run: npm run build:linux-${{ matrix.target }}
+      
+    - name: List build artifacts
+      run: |
+        echo "Build artifacts:"
+        ls -la dist/
+        echo "File sizes:"
+        du -h dist/*
+        
+    - name: Upload AppImage artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: expert-selection-system-${{ matrix.arch }}-AppImage
+        path: dist/*.AppImage
+        retention-days: 30
+        
+    - name: Upload Deb package artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: expert-selection-system-${{ matrix.arch }}-Deb
+        path: dist/*.deb
+        retention-days: 30
+        
+    - name: Upload unpacked directory
+      uses: actions/upload-artifact@v4
+      with:
+        name: expert-selection-system-${{ matrix.arch }}-unpacked
+        path: dist/linux-${{ matrix.arch }}-unpacked/
+        retention-days: 30
+
+  # 专门构建 ARM64 版本（用于发布）
+  build-arm64-release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential python3 make
+        
+    - name: Install npm dependencies
+      run: npm ci
+      
+    - name: Rebuild sqlite3 for ARM64
+      run: |
+        export npm_config_arch=arm64
+        export npm_config_target=28.0.0
+        export npm_config_disturl=https://electronjs.org/headers
+        export npm_config_runtime=electron
+        export npm_config_build_from_source=true
+        npm rebuild sqlite3
+        
+    - name: Build ARM64 App
+      run: npm run build:linux-arm64
+      
+    - name: Create release assets
+      run: |
+        # 重命名文件以包含版本号
+        VERSION=${GITHUB_REF#refs/tags/}
+        cd dist
+        
+        # 重命名 AppImage
+        if [ -f "专家抽取系统-1.0.0-arm64.AppImage" ]; then
+          mv "专家抽取系统-1.0.0-arm64.AppImage" "expert-selection-system-${VERSION}-arm64.AppImage"
+        fi
+        
+        # 重命名 Deb 包
+        if [ -f "专家抽取系统_1.0.0_arm64.deb" ]; then
+          mv "专家抽取系统_1.0.0_arm64.deb" "expert-selection-system-${VERSION}-arm64.deb"
+        fi
+        
+        echo "Release assets created:"
+        ls -la *.AppImage *.deb || echo "No release assets found"
+        
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/expert-selection-system-${{ github.ref_name }}-arm64.AppImage
+        asset_name: expert-selection-system-${{ github.ref_name }}-arm64.AppImage
+        asset_content_type: application/octet-stream
+        
+    - name: Upload Deb Package
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/expert-selection-system-${{ github.ref_name }}-arm64.deb
+        asset_name: expert-selection-system-${{ github.ref_name }}-arm64.deb
+        asset_content_type: application/vnd.debian.binary-package
