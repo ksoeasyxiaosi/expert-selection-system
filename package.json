@@ -67,14 +67,12 @@
         {
           "target": "AppImage",
           "arch": [
-            "armv7l",
             "arm64"
           ]
         },
         {
           "target": "deb",
           "arch": [
-            "armv7l",
             "arm64"
           ]
         }
