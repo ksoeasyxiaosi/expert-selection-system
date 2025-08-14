@@ -13,6 +13,7 @@
     "build:linux-arm": "electron-builder --linux --armv7l",
     "build:linux-arm64": "electron-builder --linux --arm64",
     "build:linux-x64": "electron-builder --linux --x64",
+    "build:linux-simple": "node build-linux-simple.js",
     "install:legacy": "npm install --legacy-peer-deps",
     "rebuild": "electron-rebuild",
     "rebuild:sqlite3": "npm rebuild sqlite3"
@@ -67,16 +68,14 @@
           "target": "AppImage",
           "arch": [
             "armv7l",
-            "arm64",
-            "x64"
+            "arm64"
           ]
         },
         {
           "target": "deb",
           "arch": [
             "armv7l",
-            "arm64",
-            "x64"
+            "arm64"
           ]
         }
       ],
@@ -121,7 +120,8 @@
     ],
     "asar": false,
     "includeSubNodeModules": true,
-    "npmRebuild": false
+    "npmRebuild": false,
+    "publish": null
   },
   "__npminstall_done": false
 }

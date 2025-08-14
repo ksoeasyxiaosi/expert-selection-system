@@ -45,10 +45,12 @@ jobs:
         npm rebuild sqlite3
         
     - name: Build all Linux architectures
+      env:
+        GH_TOKEN: dummy-token
+        GITHUB_TOKEN: dummy-token
+        ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES: true
       run: |
-        npm run build:linux-arm64
-        npm run build:linux-arm
-        npm run build:linux-x64
+        npm run build:linux-simple
         
     - name: Create Release
       uses: softprops/action-gh-release@v1

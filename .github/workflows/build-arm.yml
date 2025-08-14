@@ -53,12 +53,11 @@ jobs:
         find node_modules/sqlite3 -name "*.node" || echo "No .node files found"
         
     - name: Build Linux ARM App
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES: true
       run: |
-        if [ "${{ github.event.inputs.architecture }}" = "armv7l" ]; then
-          npm run build:linux-arm
-        else
-          npm run build:linux-arm64
-        fi
+        npm run build:linux-simple
         
     - name: List build artifacts
       run: |
