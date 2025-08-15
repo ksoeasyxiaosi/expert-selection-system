@@ -27,15 +27,40 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
+        cache: 'npm'
         
     - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential python3 make
         
-    - name: Install npm dependencies
-      run: npm install
-      
+    - name: Configure npm for better reliability
+      run: |
+        npm config set registry https://registry.npmjs.org/
+        npm config set electron_mirror https://npmmirror.com/mirrors/electron/
+        npm config set electron_builder_binaries_mirror https://npmmirror.com/mirrors/electron-builder-binaries/
+        npm config set timeout 600000
+        npm config set fetch-retries 5
+        npm config set fetch-retry-mintimeout 20000
+        npm config set fetch-retry-maxtimeout 120000
+        
+    - name: Install npm dependencies with retry
+      run: |
+        for i in 1 2 3; do
+          echo "Attempt $i to install dependencies..."
+          if npm ci --no-audit --no-fund; then
+            echo "Dependencies installed successfully!"
+            break
+          else
+            echo "Attempt $i failed. Retrying..."
+            if [ $i -eq 3 ]; then
+              echo "All attempts failed. Exiting."
+              exit 1
+            fi
+            sleep 10
+          fi
+        done
+        
     - name: Rebuild sqlite3 for ARM
       run: |
         export npm_config_arch=${{ github.event.inputs.architecture || 'arm64' }}
@@ -56,7 +81,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES: true
       run: |
-        npm run build:linux-optimized
+        npm run build:linux-arm64
         
     - name: List build artifacts
       run: |
