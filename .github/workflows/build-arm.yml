@@ -42,7 +42,6 @@ jobs:
       run: |
         export ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
         export ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/
-        export ELECTRON_CUSTOM_DIR={{ version }}
         echo "Electron mirror: $ELECTRON_MIRROR"
         echo "Electron builder binaries mirror: $ELECTRON_BUILDER_BINARIES_MIRROR"
         
