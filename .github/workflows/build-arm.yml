@@ -33,81 +33,18 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential python3 make
-        
-    - name: Configure npm for better reliability
-      run: |
-        npm config set registry https://registry.npmjs.org/
-        
-    - name: Set Electron environment variables
-      run: |
-        export ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
-        export ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/
-        echo "Electron mirror: $ELECTRON_MIRROR"
-        echo "Electron builder binaries mirror: $ELECTRON_BUILDER_BINARIES_MIRROR"
-        
-    - name: Install npm dependencies with retry
-      run: |
-        for i in 1 2 3; do
-          echo "Attempt $i to install dependencies..."
-          if npm install; then
-            echo "Dependencies installed successfully!"
-            break
-          else
-            echo "Attempt $i failed. Retrying..."
-            if [ $i -eq 3 ]; then
-              echo "All attempts failed. Exiting."
-              exit 1
-            fi
-            sleep 10
-          fi
-        done
-        
-    - name: Rebuild sqlite3 for ARM
-      run: |
-        export npm_config_arch=${{ github.event.inputs.architecture || 'arm64' }}
-        export npm_config_target=28.0.0
-        export npm_config_disturl=https://electronjs.org/headers
-        export npm_config_runtime=electron
-        export npm_config_build_from_source=true
-        npm rebuild sqlite3
-        
-    - name: Verify sqlite3 module
-      run: |
-        echo "Checking sqlite3 module..."
-        ls -la node_modules/sqlite3/lib/binding/ || echo "No binding directory found"
-        find node_modules/sqlite3 -name "*.node" || echo "No .node files found"
-        
+
     - name: Build Linux ARM App
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES: true
       run: |
+        npm install
         npm run build:linux-arm64
-        
-    - name: List build artifacts
-      run: |
-        echo "Build artifacts:"
-        ls -la dist/
-        echo "File sizes:"
-        du -h dist/*
-        
+
     - name: Upload AppImage
       uses: actions/upload-artifact@v4
       with:
         name: expert-selection-system-${{ github.event.inputs.architecture || 'arm64' }}-AppImage
         path: dist/*.AppImage
-        retention-days: 30
-        
-    - name: Upload Deb package
-      uses: actions/upload-artifact@v4
-      with:
-        name: expert-selection-system-${{ github.event.inputs.architecture || 'arm64' }}-Deb
-        path: dist/*.deb
-        retention-days: 30
-        
-    - name: Upload unpacked directory
-      uses: actions/upload-artifact@v4
-      with:
-        name: expert-selection-system-${{ github.event.inputs.architecture || 'arm64' }}-unpacked
-        path: dist/linux-${{ github.event.inputs.architecture || 'arm64' }}-unpacked/
         retention-days: 30
