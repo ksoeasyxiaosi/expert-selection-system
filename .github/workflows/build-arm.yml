@@ -33,8 +33,7 @@ jobs:
       run: |
         uname -m  
         sudo apt-get update
-        sudo apt-get install -y build-essential python3 make
-        sudo apt-get install -y ruby-dev rubygems build-essential
+        sudo apt-get install -y build-essential python3 make libsqlite3-dev ruby-dev rubygems 
         sudo gem install fpm
 
     - name: Build Linux ARM App
