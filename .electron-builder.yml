@@ -33,7 +33,7 @@ files:
   - "!node_modules/*/demos/**/*"
 
 # 启用 asar 打包
-asar: true
+asar: false
 asarUnpack:
   - node_modules/sqlite3/**/*
 
