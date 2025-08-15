@@ -13,11 +13,7 @@
     "build:linux-arm": "electron-builder --linux --armv7l",
     "build:linux-arm64": "electron-builder --linux --arm64",
     "build:linux-x64": "electron-builder --linux --x64",
-    "build:linux-simple": "node build-linux-simple.js",
-    "build:linux-optimized": "node build-optimized.js",
-    "build:simple": "node build-simple.js",
-    "analyze-size": "node analyze-size.js",
-    "check-env": "node check-env.js",
+    "postinstall": "electron-builder install-app-deps",
     "install:legacy": "npm install --legacy-peer-deps",
     "rebuild": "electron-rebuild",
     "rebuild:sqlite3": "npm rebuild sqlite3"
@@ -73,8 +69,7 @@
         }
       ],
       "icon": "assets/icon.ico",
-      "requestedExecutionLevel": "asInvoker",
-      "compression": "maximum"
+      "requestedExecutionLevel": "asInvoker"
     },
     "linux": {
       "target": [
@@ -93,7 +88,6 @@
       ],
       "icon": "assets/icon.png",
       "category": "Utility",
-      "compression": "maximum",
       "desktop": {
         "Name": "专家抽取系统",
         "Comment": "专家抽取桌面应用",
@@ -109,8 +103,7 @@
       "shortcutName": "专家抽取系统",
       "installerIcon": "assets/icon.ico",
       "uninstallerIcon": "assets/icon.ico",
-      "installerHeaderIcon": "assets/icon.ico",
-      "compression": "maximum"
+      "installerHeaderIcon": "assets/icon.ico"
     },
     "extraResources": [
       {
@@ -128,10 +121,7 @@
     ],
     "includeSubNodeModules": false,
     "npmRebuild": false,
-    "publish": null,
-    "compression": "maximum",
-    "removePackageScripts": true,
-    "removePackageKeywords": true
+    "publish": null
   },
   "__npminstall_done": false
 }

@@ -90,7 +90,6 @@ nsis:
   installerIcon: assets/icon.ico
   uninstallerIcon: assets/icon.ico
   installerHeaderIcon: assets/icon.ico
-  compression: maximum
 
 # 发布配置
 publish: null
