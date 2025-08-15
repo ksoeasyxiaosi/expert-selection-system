@@ -49,7 +49,7 @@ jobs:
       run: |
         for i in 1 2 3; do
           echo "Attempt $i to install dependencies..."
-          if npm ci --no-audit --no-fund; then
+          if npm install; then
             echo "Dependencies installed successfully!"
             break
           else

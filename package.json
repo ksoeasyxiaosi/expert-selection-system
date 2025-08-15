@@ -113,6 +113,20 @@
           "**/*.db",
           "**/*.sql"
         ]
+      },
+      {
+        "from": "node_modules/sqlite3/",
+        "to": "node_modules/sqlite3/",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "node_modules/uuid/",
+        "to": "node_modules/uuid/",
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "asar": true,
