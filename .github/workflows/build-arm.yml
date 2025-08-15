@@ -42,9 +42,9 @@ jobs:
         npm install
         npm run build:linux-arm64
 
-    - name: Upload AppImage
+    - name: Upload unpacked directory
       uses: actions/upload-artifact@v4
       with:
-        name: expert-selection-system-${{ github.event.inputs.architecture || 'arm64' }}-AppImage
-        path: dist/*.AppImage
+        name: expert-selection-system-${{ github.event.inputs.architecture || 'arm64' }}-unpacked
+        path: dist/linux-${{ github.event.inputs.architecture || 'arm64' }}-unpacked/
         retention-days: 30

@@ -115,10 +115,7 @@
       },
       {
         "from": "node_modules/sqlite3/",
-        "to": "node_modules/sqlite3/",
-        "filter": [
-          "**/*"
-        ]
+        "to": "node_modules/sqlite3/"
       },
       {
         "from": "node_modules/uuid/",
@@ -127,10 +124,6 @@
       {
         "from": "node_modules/bindings/",
         "to": "node_modules/bindings/"
-      },
-      {
-        "from": "node_modules/sqlite3/lib/bindings/",
-        "to": "node_modules/sqlite3/lib/bindings/"
       }
     ],
     "asar": false,
