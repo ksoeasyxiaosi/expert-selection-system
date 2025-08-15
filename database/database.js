@@ -1,16 +1,3 @@
-
-
-const sqlite3Path = path.join(
-  app.getAppPath(),
-  'node_modules',
-  'sqlite3',
-  'lib',
-  'binding',
-  'node_sqlite3.node'
-);
-console.log(sqlite3Path);
-process.env.NODE_SQLITE3_BIN = sqlite3Path
-
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');

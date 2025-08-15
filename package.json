@@ -133,7 +133,7 @@
         "to": "node_modules/sqlite3/lib/bindings/"
       }
     ],
-    "asar": true,
+    "asar": false,
     "asarUnpack": [
       "node_modules/sqlite3/**/*"
     ],
