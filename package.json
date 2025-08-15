@@ -115,15 +115,38 @@
       },
       {
         "from": "node_modules/sqlite3/",
-        "to": "node_modules/sqlite3/"
+        "to": "node_modules/sqlite3/",
+        "filter": [
+          "**/*"
+        ]
       },
       {
         "from": "node_modules/uuid/",
-        "to": "node_modules/uuid/"
+        "to": "node_modules/uuid/",
+        "filter": [
+          "**/*"
+        ]
       },
       {
         "from": "node_modules/bindings/",
-        "to": "node_modules/bindings/"
+        "to": "node_modules/bindings/",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "node_modules/node-addon-api/",
+        "to": "node_modules/node-addon-api/",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "node_modules/file-uri-to-path/",
+        "to": "node_modules/file-uri-to-path/",
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "asar": false,
