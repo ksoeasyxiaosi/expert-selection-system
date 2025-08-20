@@ -70,7 +70,7 @@ function reinstallSqlite3() {
     
     try {
         // 重新安装 sqlite3
-        execSync('npm install sqlite3@5.1.7', { 
+        execSync('npm install sqlite3@5.0.2', { 
             stdio: 'inherit',
             env: { ...process.env }
         });
