@@ -1,0 +1,73 @@
+{
+  "timestamp": "2025-08-20T03:13:08.066Z",
+  "platform": "win32",
+  "arch": "x64",
+  "libraries": {
+    "nss": {
+      "libnss3.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "libnssutil3.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "libssl3.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "libcrypto.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      }
+    },
+    "sqlite": {
+      "libsqlite3.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      }
+    },
+    "system": {
+      "libc.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "libm.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "libdl.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "libpthread.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "librt.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "libutil.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      },
+      "libz.so": {
+        "exists": false,
+        "path": null,
+        "size": 0
+      }
+    }
+  }
+}

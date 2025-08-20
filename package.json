@@ -98,7 +98,33 @@
         "Comment": "专家抽取桌面应用",
         "Type": "Application",
         "Categories": "Utility;"
-      }
+      },
+      "extraFiles": [
+        {
+          "from": "/usr/lib/x86_64-linux-gnu/",
+          "to": "lib/",
+          "filter": [
+            "libnss3.so*",
+            "libnssutil3.so*",
+            "libssl3.so*",
+            "libcrypto.so*",
+            "libsqlite3.so*",
+            "libz.so*"
+          ]
+        },
+        {
+          "from": "/lib/x86_64-linux-gnu/",
+          "to": "lib/",
+          "filter": [
+            "libc.so*",
+            "libm.so*",
+            "libdl.so*",
+            "libpthread.so*",
+            "librt.so*",
+            "libutil.so*"
+          ]
+        }
+      ]
     },
     "nsis": {
       "oneClick": false,
