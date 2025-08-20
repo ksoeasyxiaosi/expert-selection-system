@@ -42,7 +42,6 @@ jobs:
         ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES: true
       run: |
         npm install
-        npm run collect-libs
         npm run build:linux-arm64
 
     - name: Upload unpacked directory
