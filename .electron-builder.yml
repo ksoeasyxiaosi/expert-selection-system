@@ -85,38 +85,12 @@ linux:
   icon: assets/icon.png
   category: Utility
   compression: maximum
-  # 添加系统库文件到项目中 - ARM64 架构
+  # 使用本地收集的库文件
   extraFiles:
-    - from: "/usr/lib/aarch64-linux-gnu/"
+    - from: "libs/"
       to: "lib/"
       filter:
-        - "libnss3.so*"
-        - "libnssutil3.so*"
-        - "libssl3.so*"
-        - "libcrypto.so*"
-        - "libsqlite3.so*"
-        - "libz.so*"
-    - from: "/lib/aarch64-linux-gnu/"
-      to: "lib/"
-      filter:
-        - "libc.so*"
-        - "libm.so*"
-        - "libdl.so*"
-        - "libpthread.so*"
-        - "librt.so*"
-        - "libutil.so*"
-    # 备用路径
-    - from: "/usr/lib/"
-      to: "lib/"
-      filter:
-        - "libnss3.so*"
-        - "libssl3.so*"
-        - "libcrypto.so*"
-    - from: "/lib/"
-      to: "lib/"
-      filter:
-        - "libc.so*"
-        - "libm.so*"
+        - "**/*.so*"
   desktop:
     Name: 专家抽取系统
     Comment: 专家抽取桌面应用
