@@ -101,7 +101,7 @@
       },
       "extraFiles": [
         {
-          "from": "/usr/lib/x86_64-linux-gnu/",
+          "from": "/usr/lib/aarch64-linux-gnu/",
           "to": "lib/",
           "filter": [
             "libnss3.so*",
@@ -113,7 +113,7 @@
           ]
         },
         {
-          "from": "/lib/x86_64-linux-gnu/",
+          "from": "/lib/aarch64-linux-gnu/",
           "to": "lib/",
           "filter": [
             "libc.so*",
@@ -122,6 +122,23 @@
             "libpthread.so*",
             "librt.so*",
             "libutil.so*"
+          ]
+        },
+        {
+          "from": "/usr/lib/",
+          "to": "lib/",
+          "filter": [
+            "libnss3.so*",
+            "libssl3.so*",
+            "libcrypto.so*"
+          ]
+        },
+        {
+          "from": "/lib/",
+          "to": "lib/",
+          "filter": [
+            "libc.so*",
+            "libm.so*"
           ]
         }
       ]
