@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "专家抽取桌面应用",
   "main": "main.js",
+  "engines": {
+    "node": "14.21.3"
+  },
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
@@ -33,14 +36,14 @@
   "author": "huangchuping <ksoeasyxiaosi@gmail.com> (https://github.com/ksoeasyxiaosi)",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^28.0.0",
-    "electron-builder": "^24.9.1",
-    "electron-rebuild": "^3.2.9"
+    "electron": "^13.6.9",
+    "electron-builder": "^23.6.0",
+    "electron-rebuild": "^3.2.3"
   },
   "dependencies": {
     "rebuild": "^0.1.2",
-    "sqlite3": "^5.0.2",
-    "uuid": "^9.0.1"
+    "sqlite3": "^5.0.8",
+    "uuid": "^8.3.2"
   },
   "build": {
     "appId": "com.expert.selection",
